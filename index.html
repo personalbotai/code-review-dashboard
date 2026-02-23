@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Review Dashboard - AI-Powered Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <style>
+        .code-block {
+            background: #0d1117;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .code-header {
+            background: #161b22;
+            padding: 8px 16px;
+            font-size: 0.875rem;
+            color: #8b949e;
+            border-bottom: 1px solid #30363d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        pre code {
+            padding: 16px;
+            display: block;
+            overflow-x: auto;
+        }
+        .severity-critical { color: #f85149; }
+        .severity-high { color: #ff7b72; }
+        .severity-medium { color: #d29922; }
+        .severity-low { color: #8957e5; }
+        .severity-info { color: #58a6ff; }
+        .badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-c { background: #f8514933; color: #f85149; }
+        .badge-h { background: #ff7b7233; color: #ff7b72; }
+        .badge-m { background: #d2992233; color: #d29922; }
+        .badge-l { background: #8957e533; color: #8957e5; }
+        .badge-i { background: #58a6ff33; color: #58a6ff; }
+        .file-tree-item {
+            padding: 6px 12px;
+            cursor: pointer;
+            border-left: 3px solid transparent;
+        }
+        .file-tree-item:hover {
+            background: #21262d;
+        }
+        .file-tree-item.active {
+            background: #1f6feb33;
+            border-left-color: #1f6feb;
+        }
+        .suggestion-card {
+            background: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+        .suggestion-card:hover {
+            transform: translateY(-2px);
+            border-color: #8b949e;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen">
+    <header class="bg-gray-800 border-b border-gray-700">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-code-review text-blue-500 text-2xl"></i>
+                    <h1 class="text-xl font-bold">Code Review Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button onclick="runAnalysis()" class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded font-medium transition flex items-center">
+                        <i class="fas fa-play mr-2"></i> Analisis
+                    </button>
+                    <button onclick="loadSample()" class="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded font-medium transition">
+                        Sample
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Sidebar: File Tree -->
+            <aside class="lg:col-span-1 bg-gray-800 rounded-lg p-4">
+                <h2 class="text-lg font-semibold mb-4 flex items-center">
+                    <i class="fas fa-folder-tree mr-2 text-yellow-400"></i>
+                    Struktur Proyek
+                </h2>
+                <div id="file-tree" class="space-y-1 text-sm">
+                    <!-- File tree populated by JS -->
+                </div>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="lg:col-span-3 space-y-6">
+                <!-- Overview Stats -->
+                <section class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    <div class="bg-gray-800 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-red-400" id="stat-critical">0</div>
+                        <div class="text-xs text-gray-400 uppercase">Critical</div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-orange-400" id="stat-high">0</div>
+                        <div class="text-xs text-gray-400 uppercase">High</div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-yellow-400" id="stat-medium">0</div>
+                        <div class="text-xs text-gray-400 uppercase">Medium</div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-purple-400" id="stat-low">0</div>
+                        <div class="text-xs text-gray-400 uppercase">Low</div>
+                    </div>
+                    <div class="bg-gray-800 rounded-lg p-4 text-center">
+                        <div class="text-3xl font-bold text-blue-400" id="stat-files">0</div>
+                        <div class="text-xs text-gray-400 uppercase">Files</div>
+                    </div>
+                </section>
+
+                <!-- Selected File Analysis -->
+                <section id="file-analysis" class="bg-gray-800 rounded-lg p-6 hidden">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-lg font-semibold">
+                            <i class="fas fa-file-code mr-2 text-green-400"></i>
+                            <span id="current-filename">filename.go</span>
+                        </h2>
+                        <div class="text-sm text-gray-400">
+                            <span id="current-file-lang">Go</span>
+                        </div>
+                    </div>
+
+                    <!-- Code View -->
+                    <div class="code-block mb-6">
+                        <div class="code-header">
+                            <span>Source Code</span>
+                            <button onclick="copyCode()" class="text-xs bg-gray-700 hover:bg-gray-600 px-2 py-1 rounded transition">
+                                <i class="fas fa-copy mr-1"></i> Copy
+                            </button>
+                        </div>
+                        <pre><code id="code-view" class="language-go"></code></pre>
+                    </div>
+
+                    <!-- Issues List -->
+                    <h3 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-exclamation-triangle mr-2 text-yellow-400"></i>
+                        Issues Found (<span id="issue-count">0</span>)
+                    </h3>
+                    <div id="issues-list" class="space-y-4">
+                        <!-- Issues injected here -->
+                    </div>
+                </section>
+
+                <!-- Empty State -->
+                <div id="empty-state" class="bg-gray-800 rounded-lg p-12 text-center">
+                    <i class="fas fa-search text-6xl text-gray-600 mb-4"></i>
+                    <h3 class="text-xl font-semibold mb-2">Belum ada analisis</h3>
+                    <p class="text-gray-400 mb-6">Klik tombol "Analisis" untuk memindai kode, atau "Sample" untuk memuat contoh.</p>
+                </div>
+
+                <!-- AI Suggestions Panel -->
+                <section id="suggestions-panel" class="bg-gray-800 rounded-lg p-6 hidden">
+                    <h2 class="text-lg font-semibold mb-4 flex items-center">
+                        <i class="fas fa-lightbulb mr-2 text-yellow-400"></i>
+                        AI Suggestions
+                    </h2>
+                    <div id="suggestions-list" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Suggestions injected -->
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 border-t border-gray-700 mt-8 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-400 text-sm">
+            <p>Code Review Dashboard - Analisis statis + AI saran perbaikan kode</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
