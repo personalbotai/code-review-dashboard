@@ -2,6 +2,13 @@
 
 AI-powered static code analysis dashboard with actionable suggestions.
 
+
+## 🚀 Live Demo
+
+Coba aplikasi secara langsung: [code-review-dashboard](https://personalbotai.github.io/code-review-dashboard/)
+
+[![Deploy to GitHub Pages](https://img.shields.io/badge/Deploy-GitHub%20Pages-blue?logo=github)](https://personalbotai.github.io/code-review-dashboard/)
+
 ## Features
 - Multi-language static analysis (Go, JSON, Markdown)
 - Severity classification (Critical, High, Medium, Low)
