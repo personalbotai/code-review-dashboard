@@ -1,0 +1,105 @@
+/* Premium UI - Envato Style Master Template */
+:root {
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --bg-dark: #0f172a;
+    --bg-panel: #1e293b;
+    --bg-card: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --accent: #38bdf8;
+    --success: #10b981;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+}
+
+/* Beautiful Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #64748b; }
+
+/* Sidebar Premium */
+.sidebar {
+    background: var(--bg-panel);
+    border-right: 1px solid var(--border);
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+.header-bar {
+    padding: 1.5rem;
+    background: linear-gradient(135deg, var(--bg-panel) 0%, #0f172a 100%);
+    border-bottom: 1px solid var(--border);
+}
+
+.course-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Typography Plugin Overrides */
+.prose { max-width: 100% !important; }
+.prose h1 { color: #f8fafc; font-size: 2.25rem; font-weight: 800; letter-spacing: -0.025em; margin-bottom: 1.5rem; }
+.prose h2 { color: var(--accent); font-size: 1.5rem; font-weight: 600; margin-top: 2.5rem; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; }
+.prose h3 { color: #e2e8f0; font-size: 1.25rem; font-weight: 600; margin-top: 2rem; }
+.prose p { color: #cbd5e1; line-height: 1.8; margin-bottom: 1.25rem; }
+.prose a { color: var(--primary); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+.prose a:hover { color: var(--accent); }
+.prose code { background: #0f172a; color: #38bdf8; padding: 0.2rem 0.4rem; border-radius: 0.25rem; font-size: 0.875em; border: 1px solid var(--border); }
+.prose pre { background: #0f172a; border: 1px solid var(--border); border-radius: 0.75rem; box-shadow: inset 0 2px 4px rgba(0,0,0,0.5); padding: 1.25rem; }
+.prose pre code { background: transparent; border: none; padding: 0; color: #e2e8f0; font-family: 'Fira Code', monospace; }
+
+/* Dynamic Generated Nav Items (app.js integration) */
+.module-item { border-bottom: 1px solid var(--border); }
+.module-header { padding: 1rem 1.5rem; cursor: pointer; display: flex; justify-content: space-between; align-items: center; color: var(--text-muted); font-weight: 600; transition: all 0.2s; background: var(--bg-panel); }
+.module-header:hover { color: white; background: rgba(255,255,255,0.02); }
+.module-header.active { color: var(--accent); border-left: 3px solid var(--accent); }
+.lesson-item { padding: 0.75rem 1.5rem 0.75rem 2.5rem; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; transition: all 0.2s; display: flex; align-items: center; }
+.lesson-item:hover { background: rgba(59, 130, 246, 0.1); color: white; }
+.lesson-item.active { background: rgba(59, 130, 246, 0.15); color: var(--accent); font-weight: 500; }
+.lesson-item.completed { color: var(--success); }
+
+/* Buttons */
+button { transition: all 0.2s ease; }
+.btn-run, .btn-nav, .btn-complete {
+    background: var(--primary); color: white; padding: 0.6rem 1.25rem; border-radius: 0.5rem; font-weight: 500; border: none; cursor: pointer;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.btn-run:hover, .btn-nav:hover, .btn-complete:hover { background: var(--primary-hover); transform: translateY(-1px); }
+.btn-nav:disabled { background: var(--bg-card); color: var(--text-muted); cursor: not-allowed; box-shadow: none; transform: none; }
+.btn-reset { background: var(--bg-card); color: var(--text-muted); padding: 0.6rem 1.25rem; border-radius: 0.5rem; font-weight: 500; cursor: pointer; border: 1px solid var(--border); }
+.btn-reset:hover { background: #475569; color: white; }
+.btn-completed { background: rgba(16, 185, 129, 0.1); color: var(--success); border: 1px solid rgba(16, 185, 129, 0.2); padding: 0.6rem 1.25rem; border-radius: 0.5rem; font-weight: 500; cursor: default; }
+
+/* Progress Bar */
+.progress-bar { height: 6px; background: var(--bg-dark); border-radius: 999px; overflow: hidden; margin-top: 0.75rem; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+.course-progress { font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; font-weight: 500; }
+
+/* Editor & Output */
+.code-section { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); margin: 2rem 0; }
+.code-editor { width: 100%; min-height: 200px; background: #0f172a; color: #e2e8f0; font-family: 'Fira Code', monospace; padding: 1rem; border-radius: 0.5rem; border: 1px solid #334155; margin-bottom: 1rem; resize: vertical; line-height: 1.5; font-size: 0.9rem; }
+.code-editor:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2); }
+.output-area { background: #000; color: #10b981; font-family: 'Fira Code', monospace; padding: 1rem; border-radius: 0.5rem; min-height: 80px; font-size: 0.875rem; border: 1px solid #1f2937; }
+
+/* Quiz Section */
+.quiz-section { background: var(--bg-panel); border: 1px solid var(--border); border-radius: 0.75rem; padding: 2rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); }
+.quiz-title { font-size: 1.25rem; font-weight: 600; color: white; margin-bottom: 1.5rem; display: flex; align-items: center; }
+.quiz-option { display: block; padding: 1rem 1.25rem; margin: 0.75rem 0; background: var(--bg-dark); border: 2px solid var(--border); border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; font-weight: 500; color: #cbd5e1; }
+.quiz-option:hover { border-color: #475569; background: #1e293b; }
+.quiz-option.selected { border-color: var(--primary); background: rgba(59, 130, 246, 0.1); color: white; }
+.quiz-option.correct { border-color: var(--success); background: rgba(16, 185, 129, 0.1); color: var(--success); }
+.quiz-option.incorrect { border-color: #ef4444; background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+
+/* Layout adjustments */
+#lesson-header { background: rgba(30, 41, 59, 0.8) !important; backdrop-filter: blur(12px); border-bottom: 1px solid var(--border) !important; position: sticky; top: 0; z-index: 20; }
+.content-area { overflow-y: auto; scroll-behavior: smooth; }
